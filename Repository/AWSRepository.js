@@ -5,7 +5,7 @@ const usuarioRepository = require('../Repository/UsuarioRepository');
 
 AWS.config.update({
     region: 'us-east-1',
-    accessKeyId: 'ACCESSKEYID',
+    accessKeyId: '',
     secretAccessKey: 'SECRETACCESSKEY'
 });
 
