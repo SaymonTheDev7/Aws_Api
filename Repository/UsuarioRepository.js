@@ -21,7 +21,6 @@ class UsuarioRepository {
     }
 
     async buscarUsuario(id) {
-        console.log(id);
         try {
             const usuario = await database('usuario').select("*").where({id:id});
             return { usuario }

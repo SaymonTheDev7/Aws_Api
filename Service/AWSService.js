@@ -17,9 +17,7 @@ class AWSService {
         const fileData = await AWSRepository.downloadImagem(referencia);
         const downloadsPath = path.join(require('os').homedir(), 'Downloads');
         const filePath = path.join(downloadsPath, referencia);
-
         fs.writeFileSync(filePath, fileData);
-
         return filePath;
     }
 }

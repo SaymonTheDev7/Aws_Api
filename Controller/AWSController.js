@@ -5,14 +5,11 @@ const fs = require('fs');
 class AWSController {
     async buscarImagem(req, res) {
         try {
-            const { referencia } = req.body;
-            if (!referencia) {
-                return res.status(400).json({ error: "A referência da imagem é obrigatória." });
-            }
-            const resultado = await AWSService.buscarImagem(referencia);
-            res.json(resultado);
+            const { referencia } = req.params;
+            const response = await AWSService.buscarImagem(referencia);
+            res.status(200).json(response);
         } catch (error) {
-            res.status(400).json({ error: error.message });
+            res.status(400).json({ erro: error.message });
         }
     }
 
@@ -30,21 +27,9 @@ class AWSController {
 
     async downloadImagem(req, res) {
         try {
-            const { referencia } = req.body;
-            if (!referencia) {
-                return res.status(400).json({ error: "A referência da imagem é obrigatória." });
-            }
-
+            const { referencia } = req.params;
             const filePath = await AWSService.downloadImagem(referencia);
-
-            res.download(filePath, (err) => {
-                if (err) {
-                    console.error("Erro ao enviar o arquivo:", err);
-                    res.status(500).json({ error: "Erro ao enviar o arquivo." });
-                }
-
-                console.log(`Arquivo salvo em: ${filePath}`);
-            });
+            res.status(200).json({ mensagem: 'Imagem baixda com sucesso', caminho: filePath });
         } catch (error) {
             res.status(400).json({ error: error.message });
         }
