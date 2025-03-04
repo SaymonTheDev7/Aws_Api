@@ -21,14 +21,14 @@ class UsuarioRepository {
     }
 
     async buscarUsuario(id) {
+        console.log(id);
         try {
-            const usuario = await database('usuario').select("*").where({id:id.id});
+            const usuario = await database('usuario').select("*").where({id:id});
             return { usuario }
         } catch (error) {
-            throw new Error("Erro ao buscar a imagens");
+            throw new Error("Usuário inexistente");
         }
     }
-    
     async atualizarUsuario(id, dados) {
         try {
             const resultado = await database('usuario')

@@ -19,14 +19,12 @@ class AWSController {
     async uploadImagem(req, res) {
         try {
             const { file } = req;
-            if (!file) {
-                return res.status(400).json({ error: "Nenhum arquivo enviado." });
-            }
+            const { id } = req.params;
 
-            const resultado = await AWSService.uploadImagem(file);
-            res.json(resultado);
+            const response = await AWSService.uploadImagem(file, id);
+            res.status(200).json(response);
         } catch (error) {
-            res.status(400).json({ error: error.message });
+            res.status(400).json({ erro: error.message });
         }
     }
 

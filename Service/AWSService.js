@@ -1,7 +1,6 @@
 const AWSRepository = require('../Repository/AWSRepository');
 const path = require('path');
 const fs = require('fs');
-const crypto = require('crypto');
 
 class AWSService {
     async buscarImagem(referencia) {
@@ -18,7 +17,9 @@ class AWSService {
         const fileData = await AWSRepository.downloadImagem(referencia);
         const downloadsPath = path.join(require('os').homedir(), 'Downloads');
         const filePath = path.join(downloadsPath, referencia);
+
         fs.writeFileSync(filePath, fileData);
+
         return filePath;
     }
 }

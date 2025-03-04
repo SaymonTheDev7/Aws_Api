@@ -1,13 +1,9 @@
 const AWS = require('aws-sdk');
-const database = require('../Database/Connection');
+const Database = require('../Database/Connection');
 const Imagem = require('../Model/Imagem');
-const usuarioRepository = require('../Repository/UsuarioRepository');
+const UsuarioRepository = require('../Repository/UsuarioRepository');
 
-AWS.config.update({
-    region: 'us-east-1',
-    accessKeyId: '',
-    secretAccessKey: 'SECRETACCESSKEY'
-});
+
 
 const s3 = new AWS.S3();
 
@@ -35,14 +31,13 @@ class AWSRepository {
                 ContentType: file.mimetype
             };
 
-            console.log(id);
+            const userTest = await UsuarioRepository.buscarUsuario(id);
 
-            const userTest = await usuarioRepository.buscarUsuario({id});
             const resultado = await s3.upload(params).promise();
 
             const imagem = new Imagem(file.originalname, id);
 
-            await database('imagem').insert({
+            await Database('imagem').insert({
                 referencia: referencia,
                 usuario_id: imagem.usuario_id,
                 data_criacao: imagem.data_criacao
