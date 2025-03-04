@@ -1,9 +1,12 @@
 const AWS = require('aws-sdk');
+const database = require('../Database/Connection');
+const Imagem = require('../Model/Imagem');
+const usuarioRepository = require('../Repository/UsuarioRepository');
 
 AWS.config.update({
-    region: '',
-    accessKeyId: '',
-    secretAccessKey: ''
+    region: 'us-east-1',
+    accessKeyId: 'ACCESSKEYID',
+    secretAccessKey: 'SECRETACCESSKEY'
 });
 
 const s3 = new AWS.S3();
@@ -23,17 +26,29 @@ class AWSRepository {
         }
     }
 
-    async uploadImagem(file) {
+    async uploadImagem(file, id, referencia) {
         try {
             const params = {
                 Bucket: 'bucketmi74',
-                Key: file.originalname,
+                Key: referencia,
                 Body: file.buffer,
                 ContentType: file.mimetype
             };
 
+            console.log(id);
+
+            const userTest = await usuarioRepository.buscarUsuario({id});
             const resultado = await s3.upload(params).promise();
-            const response = await this.buscarImagem(file.originalname);
+
+            const imagem = new Imagem(file.originalname, id);
+
+            await database('imagem').insert({
+                referencia: referencia,
+                usuario_id: imagem.usuario_id,
+                data_criacao: imagem.data_criacao
+            });
+
+            const response = await this.buscarImagem(referencia);
             return { url: response };
         } catch (error) {
             throw new Error("Erro ao fazer upload da imagem no S3: " + error.message);
