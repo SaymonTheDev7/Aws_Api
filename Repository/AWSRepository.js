@@ -3,7 +3,11 @@ const Database = require('../Database/Connection');
 const Imagem = require('../Model/Imagem');
 const UsuarioRepository = require('../Repository/UsuarioRepository');
 
-
+AWS.config.update({
+    region: 'us-east-1',
+    accessKeyId: '',
+    secretAccessKey: ''
+});
 
 const s3 = new AWS.S3();
 
